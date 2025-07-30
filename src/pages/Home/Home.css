@@ -1,0 +1,149 @@
+/* Home Page Styles */
+.home-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.home-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Results Section */
+.results-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2rem;
+}
+
+.results-section h2 {
+  margin: 0 0 1.5rem 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Save Notice */
+.save-notice {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.save-notice p {
+  margin: 0;
+  color: #856404;
+  font-size: 0.95rem;
+}
+
+.inline-signup-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin: 0 0.25rem;
+}
+
+.inline-signup-btn:hover {
+  color: #5a67d8;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: white;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.empty-state h3 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .home-content {
+    padding: 1rem;
+  }
+
+  .results-section {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.25rem;
+  }
+
+  .empty-state p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-content {
+    padding: 0.75rem;
+  }
+
+  .results-section {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .results-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .save-notice {
+    padding: 0.875rem;
+  }
+
+  .save-notice p {
+    font-size: 0.875rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.1rem;
+  }
+
+  .empty-state p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .home-content {
+    padding: 0.75rem;
+  }
+}

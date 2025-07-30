@@ -1,0 +1,90 @@
+/* Social Authentication Styles */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.divider span {
+  padding: 0 1rem;
+  color: #718096;
+  font-size: 0.875rem;
+  background: white;
+}
+
+.social-auth {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  color: #4a5568;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.social-btn:hover {
+  border-color: #cbd5e0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.social-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.google-btn:hover {
+  border-color: #4285f4;
+  background: #f8f9ff;
+}
+
+.github-btn:hover {
+  border-color: #333;
+  background: #f6f8fa;
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.github-btn .social-icon {
+  color: #333;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .social-btn {
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .social-icon {
+    width: 18px;
+    height: 18px;
+  }
+}

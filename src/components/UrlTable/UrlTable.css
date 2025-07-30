@@ -1,0 +1,486 @@
+/* URL Table Styles */
+.url-table-container h2 {
+  color: #2d3748;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.url-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+/* Clean Headers */
+.url-table th {
+  background: #f8fafc;
+  color: #4a5568;
+  font-weight: 600;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.url-table th:first-child {
+  width: 45%;
+}
+
+.url-table th:nth-child(2) {
+  width: 35%;
+}
+
+.url-table th:nth-child(3) {
+  width: 12%;
+}
+
+.url-table th:last-child {
+  width: 8%;
+}
+
+/* Single Line Rows */
+.url-table .url-row {
+  height: 48px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+.url-table .url-row:hover {
+  background: #f8fafc;
+}
+
+.url-table .url-row.clickable-row {
+  cursor: pointer;
+}
+
+.url-table .url-row.clickable-row:hover {
+  background: #edf2f7;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.url-table .url-row:last-child {
+  border-bottom: none;
+}
+
+/* Single Line Cells */
+.url-table td {
+  padding: 8px 16px;
+  vertical-align: middle;
+  border: none;
+  height: 48px;
+}
+
+/* Single Line Content */
+.url-cell-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+}
+
+.original-url-cell .url-text-scroll {
+  max-width: 350px;
+}
+
+.short-url-cell .url-text-scroll {
+  max-width: 180px;
+}
+
+.url-text-scroll {
+  flex: 1;
+  min-width: 0;
+  max-width: 200px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 transparent;
+}
+
+.url-text-scroll::-webkit-scrollbar {
+  height: 2px;
+}
+
+.url-text-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.url-text-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 2px;
+}
+
+.url-text {
+  color: #2d3748;
+  font-size: 14px;
+  white-space: nowrap;
+  line-height: 1.2;
+  display: block;
+  min-width: max-content;
+}
+
+.short-url-text {
+  color: #667eea;
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  line-height: 1.2;
+  display: block;
+  min-width: max-content;
+}
+
+.qr-cell,
+.delete-cell {
+  text-align: center;
+}
+
+/* Compact Button Styles */
+.copy-btn,
+.delete-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.copy-btn {
+  background: #e6fffa;
+  color: #319795;
+}
+
+.copy-btn:hover {
+  background: #b2f5ea;
+}
+
+.delete-btn {
+  background: #fed7d7;
+  color: #e53e3e;
+}
+
+.delete-btn:hover {
+  background: #feb2b2;
+}
+
+.qr-btn {
+  padding: 0.25rem 0.5rem;
+  background: #e6fffa;
+  color: #319795;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.qr-btn:hover {
+  background: #b2f5ea;
+}
+
+.qr-disabled {
+  font-size: 12px;
+  color: #cbd5e0;
+}
+
+/* Empty State for Table */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #718096;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: #4a5568;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Mobile Responsive - Individual Row Scrolling */
+@media (max-width: 768px) {
+  .url-table-container {
+    overflow: visible;
+  }
+
+  .table-wrapper {
+    overflow: visible;
+    background: transparent;
+    border: none;
+  }
+
+  /* Reset table to block layout for individual row scrolling */
+  .url-table,
+  .url-table thead,
+  .url-table tbody,
+  .url-table th,
+  .url-table td,
+  .url-table tr {
+    display: block;
+  }
+
+  .url-table {
+    width: 100%;
+    background: transparent;
+  }
+
+  /* Header row with individual scroll */
+  .url-table thead tr {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f8fafc;
+    white-space: nowrap;
+  }
+
+  .url-table thead tr::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .url-table thead tr::-webkit-scrollbar-track {
+    background: #f8fafc;
+    border-radius: 2px;
+  }
+
+  .url-table thead tr::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 2px;
+  }
+
+  .url-table th {
+    display: inline-block;
+    background: transparent;
+    border: none;
+    border-right: 1px solid #e2e8f0;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    white-space: nowrap;
+    vertical-align: top;
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .url-table th:first-child {
+    width: 200px;
+  }
+
+  .url-table th:nth-child(2) {
+    width: 180px;
+  }
+
+  .url-table th:nth-child(3) {
+    width: 100px;
+  }
+
+  .url-table th:last-child {
+    width: 80px;
+    border-right: none;
+  }
+
+  /* Data rows with individual scroll */
+  .url-table .url-row {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    height: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 white;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .url-table .url-row:hover {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .url-table .url-row.clickable-row:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .url-table .url-row::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .url-table .url-row::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 2px;
+  }
+
+  .url-table .url-row::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 2px;
+  }
+
+  .url-table td {
+    display: inline-block;
+    border: none;
+    border-right: 1px solid #f1f5f9;
+    padding: 12px 16px;
+    height: auto;
+    vertical-align: top;
+    white-space: nowrap;
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .url-table .original-url-cell {
+    width: 200px;
+  }
+
+  .url-table .short-url-cell {
+    width: 180px;
+  }
+
+  .url-table .qr-cell {
+    width: 100px;
+    text-align: center;
+  }
+
+  .url-table .delete-cell {
+    width: 80px;
+    text-align: center;
+    border-right: none;
+  }
+
+  .url-cell-content {
+    gap: 8px;
+    height: auto;
+    min-height: 32px;
+  }
+
+  .original-url-cell .url-text-scroll {
+    max-width: 160px;
+  }
+
+  .short-url-cell .url-text-scroll {
+    max-width: 140px;
+  }
+
+  .copy-btn,
+  .delete-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .qr-btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 11px;
+  }
+
+  .qr-disabled {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .url-table th {
+    padding: 10px 12px;
+    font-size: 12px;
+    width: 120px;
+  }
+
+  .url-table th:first-child {
+    width: 160px;
+  }
+
+  .url-table th:nth-child(2) {
+    width: 140px;
+  }
+
+  .url-table th:nth-child(3) {
+    width: 80px;
+  }
+
+  .url-table th:last-child {
+    width: 60px;
+  }
+
+  .url-table td {
+    padding: 10px 12px;
+    width: 120px;
+  }
+
+  .url-table .original-url-cell {
+    width: 160px;
+  }
+
+  .url-table .short-url-cell {
+    width: 140px;
+  }
+
+  .url-table .qr-cell {
+    width: 80px;
+  }
+
+  .url-table .delete-cell {
+    width: 60px;
+  }
+
+  .url-cell-content {
+    gap: 6px;
+    min-height: 28px;
+  }
+
+  .original-url-cell .url-text-scroll {
+    max-width: 120px;
+  }
+
+  .short-url-cell .url-text-scroll {
+    max-width: 100px;
+  }
+
+  .copy-btn,
+  .delete-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .qr-btn {
+    padding: 0.15rem 0.3rem;
+    font-size: 10px;
+  }
+
+  .qr-disabled {
+    font-size: 10px;
+  }
+}
