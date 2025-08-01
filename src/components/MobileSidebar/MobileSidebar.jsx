@@ -1,9 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../hooks/useToast'
 import './MobileSidebar.css'
 
 const MobileSidebar = ({ isOpen, onClose, onAuthModalOpen }) => {
   const { user, logout, isGuest } = useAuth()
+  const { showSuccess } = useToast()
+
+  const handleLogout = async () => {
+    const message = await logout()
+    showSuccess(message)
+    onClose()
+  }
 
   if (!isOpen) return null
 
@@ -21,7 +29,7 @@ const MobileSidebar = ({ isOpen, onClose, onAuthModalOpen }) => {
           {user ? (
             <div className="mobile-user-section">
               <div className="mobile-user-info">
-                <span className="mobile-user-greeting">Hello, {user.split('@')[0]}!</span>
+                <span className="mobile-user-greeting">Hello, {user.name || (user.email ? user.email.split('@')[0] : 'User')}!</span>
               </div>
               <Link
                 to="/dashboard"
@@ -31,10 +39,7 @@ const MobileSidebar = ({ isOpen, onClose, onAuthModalOpen }) => {
                 📊 Dashboard
               </Link>
               <button
-                onClick={() => {
-                  logout()
-                  onClose()
-                }}
+                onClick={handleLogout}
                 className="mobile-nav-btn logout"
               >
                 🚪 Sign Out

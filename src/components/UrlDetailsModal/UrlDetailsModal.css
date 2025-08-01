@@ -1,13 +1,14 @@
 /* URL Details Modal */
 .url-details-modal {
-  background: white;
+  background: #2d3748;
   border-radius: 20px;
   padding: 2rem;
   width: 100%;
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid #4a5568;
 }
 
 .url-details-content {
@@ -18,7 +19,7 @@
 
 /* Basic Info Section */
 .url-info-section h3 {
-  color: #2d3748;
+  color: #e2e8f0;
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 1rem 0;
@@ -37,38 +38,38 @@
 
 .info-item label {
   font-weight: 600;
-  color: #4a5568;
+  color: #e2e8f0;
   font-size: 0.875rem;
 }
 
 .url-textarea {
   padding: 0.75rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #4a5568;
   border-radius: 8px;
   font-size: 0.9rem;
   resize: none;
-  background: #f8f9fa;
-  color: #2d3748;
+  background: #1a2332;
+  color: #e2e8f0;
 }
 
 .url-textarea.short {
-  color: #667eea;
+  color: #60a5fa;
   font-weight: 500;
 }
 
 .guest-status {
-  color: #ed8936;
+  color: #fbbf24;
   font-weight: 500;
 }
 
 .user-status {
-  color: #48bb78;
+  color: #10b981;
   font-weight: 500;
 }
 
 /* Analytics Section */
 .analytics-section h3 {
-  color: #2d3748;
+  color: #e2e8f0;
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 1rem 0;
@@ -81,23 +82,23 @@
 }
 
 .stat-card {
-  background: #f8f9fa;
+  background: #374151;
   padding: 1.5rem;
   border-radius: 12px;
   text-align: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #4a5568;
 }
 
 .stat-number {
   font-size: 2rem;
   font-weight: 700;
-  color: #667eea;
+  color: #60a5fa;
   margin-bottom: 0.5rem;
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color: #718096;
+  color: #d1d5db;
   font-weight: 500;
 }
 
@@ -106,7 +107,7 @@
 .browser-section h3,
 .device-section h3,
 .recent-section h3 {
-  color: #2d3748;
+  color: #e2e8f0;
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 1rem 0;
@@ -127,23 +128,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem;
-  background: #f8f9fa;
+  background: #374151;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #4a5568;
 }
 
 .country-name,
 .browser-name,
 .device-name {
   font-weight: 500;
-  color: #2d3748;
+  color: #e2e8f0;
 }
 
 .country-clicks,
 .browser-clicks,
 .device-percentage {
   font-size: 0.875rem;
-  color: #667eea;
+  color: #60a5fa;
   font-weight: 600;
 }
 
@@ -159,20 +160,20 @@
   grid-template-columns: 2fr 1fr 1fr;
   gap: 1rem;
   padding: 0.75rem;
-  background: #f8f9fa;
+  background: #374151;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #4a5568;
   font-size: 0.875rem;
 }
 
 .recent-time {
-  color: #2d3748;
+  color: #e2e8f0;
   font-weight: 500;
 }
 
 .recent-location,
 .recent-browser {
-  color: #718096;
+  color: #d1d5db;
 }
 
 /* Mobile responsive */

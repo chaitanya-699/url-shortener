@@ -14,15 +14,16 @@
 }
 
 .modal-content {
-  background: white;
+  background: #2d3748;
   border-radius: 20px;
   padding: 2rem;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   position: relative;
   max-height: 90vh;
   overflow-y: auto;
+  border: 1px solid #4a5568;
 }
 
 .modal-header {
@@ -34,7 +35,7 @@
 
 .modal-header h2 {
   margin: 0;
-  color: #2d3748;
+  color: #e2e8f0;
   font-size: 1.5rem;
   font-weight: 600;
 }
@@ -44,7 +45,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #718096;
+  color: #a0aec0;
   padding: 0;
   width: 30px;
   height: 30px;
@@ -56,8 +57,8 @@
 }
 
 .modal-close:hover {
-  background: #f7fafc;
-  color: #2d3748;
+  background: #4a5568;
+  color: #e2e8f0;
 }
 
 .auth-form {
@@ -74,22 +75,28 @@
 
 .form-group label {
   font-weight: 600;
-  color: #4a5568;
+  color: #e2e8f0;
   font-size: 0.8rem;
 }
 
 .form-group input {
   padding: 0.6rem 0.8rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #4a5568;
   border-radius: 6px;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   outline: none;
+  background: #1a2332;
+  color: #e2e8f0;
+}
+
+.form-group input::placeholder {
+  color: #a0aec0;
 }
 
 .form-group input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .guest-info-text {
@@ -111,7 +118,7 @@
 
 .auth-submit-btn {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #2563eb;
   color: white;
   border: none;
   border-radius: 8px;
@@ -123,27 +130,28 @@
 }
 
 .auth-submit-btn:hover {
+  background: #1d4ed8;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
 }
 
 .auth-switch {
   text-align: center;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #4a5568;
 }
 
 .auth-switch p {
   margin: 0.5rem 0;
-  color: #718096;
+  color: #a0aec0;
   font-size: 0.875rem;
 }
 
 .switch-mode-btn {
   background: none;
   border: none;
-  color: #667eea;
+  color: #60a5fa;
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
@@ -151,7 +159,7 @@
 }
 
 .switch-mode-btn:hover {
-  color: #5a67d8;
+  color: #3b82f6;
 }
 
 .demo-notice {
@@ -186,5 +194,452 @@
     margin: 0.5rem;
     padding: 1.25rem;
     border-radius: 16px;
+  }
+}/* F
+orgot Password Styles */
+.forgot-password-link {
+  text-align: right;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-btn:hover {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+/* Modal Title Section */
+.modal-title-section h2 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-description {
+  margin: 0;
+  color: #718096;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Progress Indicator */
+.progress-indicator {
+  margin: 1.5rem 0 2rem 0;
+  padding: 0 1rem;
+}
+
+.progress-steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: #e2e8f0;
+  color: #718096;
+  transition: all 0.3s ease;
+}
+
+.step-label {
+  font-size: 0.75rem;
+  color: #718096;
+  font-weight: 500;
+  text-align: center;
+}
+
+.progress-step.active .step-number {
+  background: #667eea;
+  color: white;
+}
+
+.progress-step.active .step-label {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.progress-step.completed .step-number {
+  background: #48bb78;
+  color: white;
+}
+
+.progress-step.completed .step-label {
+  color: #48bb78;
+}
+
+.progress-line {
+  flex: 1;
+  height: 2px;
+  background: #e2e8f0;
+  margin: 0 1rem;
+  position: relative;
+  top: -16px;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.back-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: #f7fafc;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.back-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-submit-btn {
+  flex: 2;
+}
+
+/* Form Hints */
+.form-hint {
+  color: #718096;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin-top: 0.25rem;
+}
+
+.password-hint {
+  color: #e53e3e;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Resend Section */
+.resend-section {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.resend-section p {
+  margin: 0;
+  color: #718096;
+  font-size: 0.875rem;
+}
+
+.resend-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.875rem;
+}
+
+.resend-btn:hover {
+  color: #5a67d8;
+}
+
+.resend-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Forgot Password Modal Specific Styles */
+.forgot-password-modal {
+  max-width: 500px;
+  background: #2d3748;
+  border: 1px solid #4a5568;
+}
+
+.forgot-password-modal .modal-title-section h2 {
+  color: #e2e8f0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.forgot-password-modal .modal-description {
+  color: #a0aec0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Progress Indicator Dark Theme */
+.forgot-password-modal .progress-indicator {
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+
+.forgot-password-modal .step-number {
+  background: #4a5568;
+  color: #a0aec0;
+  border: 2px solid #4a5568;
+}
+
+.forgot-password-modal .step-label {
+  color: #a0aec0;
+}
+
+.forgot-password-modal .progress-step.active .step-number {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.forgot-password-modal .progress-step.active .step-label {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+.forgot-password-modal .progress-step.completed .step-number {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.forgot-password-modal .progress-step.completed .step-label {
+  color: #34d399;
+}
+
+.forgot-password-modal .progress-line {
+  background: #4a5568;
+}
+
+/* Form Elements Dark Theme */
+.forgot-password-modal .form-group input {
+  background: #1a2332;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+.forgot-password-modal .form-group input::placeholder {
+  color: #a0aec0;
+}
+
+.forgot-password-modal .form-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.forgot-password-modal .form-hint {
+  color: #a0aec0;
+  background: #374151;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-left: 3px solid #2563eb;
+  margin-top: 0.5rem;
+}
+
+/* Buttons Dark Theme */
+.forgot-password-modal .back-btn {
+  background: #374151;
+  color: #e2e8f0;
+  border: 1px solid #4a5568;
+}
+
+.forgot-password-modal .back-btn:hover {
+  background: #4a5568;
+  border-color: #6b7280;
+}
+
+.forgot-password-modal .auth-submit-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.forgot-password-modal .auth-submit-btn:hover {
+  background: #1d4ed8;
+}
+
+.forgot-password-modal .resend-btn {
+  color: #60a5fa;
+}
+
+.forgot-password-modal .resend-btn:hover {
+  color: #3b82f6;
+}
+
+.forgot-password-modal .resend-section {
+  border-top: 1px solid #4a5568;
+  background: #374151;
+  margin: 1.5rem -2rem -2rem -2rem;
+  padding: 1.5rem 2rem;
+  border-radius: 0 0 20px 20px;
+}
+
+.forgot-password-modal .resend-section p {
+  color: #a0aec0;
+  margin: 0;
+}
+
+/* Mobile Responsive for Forgot Password */
+@media (max-width: 768px) {
+  .forgot-password-modal {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .progress-indicator {
+    padding: 0 0.5rem;
+  }
+  
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+  
+  .step-label {
+    font-size: 0.7rem;
+  }
+  
+  .progress-line {
+    margin: 0 0.5rem;
+    top: -14px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .back-btn,
+  .auth-submit-btn {
+    flex: none;
+  }
+
+  .forgot-password-modal .resend-section {
+    margin: 1.5rem -1.5rem -1.5rem -1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .forgot-password-modal {
+    margin: 0.5rem;
+    padding: 1.5rem;
+  }
+  
+  .forgot-password-modal .modal-title-section h2 {
+    font-size: 1.25rem;
+  }
+  
+  .forgot-password-modal .modal-description {
+    font-size: 0.8rem;
+  }
+  
+  .progress-steps {
+    padding: 0;
+  }
+  
+  .step-number {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+  
+  .step-label {
+    font-size: 0.65rem;
+  }
+  
+  .progress-line {
+    margin: 0 0.25rem;
+    top: -12px;
+  }
+
+  .forgot-password-modal .resend-section {
+    margin: 1.5rem -1.5rem -1.5rem -1.5rem;
+    padding: 1rem 1.5rem;
+  }
+}/* Signi
+n Actions Layout */
+.signin-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.forgot-password-btn:hover {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+.signin-actions .auth-submit-btn {
+  margin-top: 0;
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Mobile responsive for signin actions */
+@media (max-width: 480px) {
+  .signin-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .forgot-password-btn {
+    text-align: center;
+    order: 2;
+  }
+  
+  .signin-actions .auth-submit-btn {
+    order: 1;
+    min-width: auto;
   }
 }

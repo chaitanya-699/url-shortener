@@ -1,8 +1,7 @@
 /* Navigation Bar */
 .navbar {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: #1a2332;
+  border-bottom: 1px solid #2d3748;
   padding: 1rem 0;
   position: sticky;
   top: 0;
@@ -57,25 +56,25 @@
 }
 
 .signin-btn {
-  background: transparent;
+  background: #2563eb;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid #2563eb;
 }
 
 .signin-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #1d4ed8;
   transform: translateY(-1px);
 }
 
 .signup-btn {
-  background: white;
-  color: #667eea;
+  background: #2563eb;
+  color: white;
 }
 
 .signup-btn:hover {
-  background: #f8f9fa;
+  background: #1d4ed8;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .user-menu {

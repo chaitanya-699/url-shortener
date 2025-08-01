@@ -1,17 +1,19 @@
 import { useClipboard } from '../../hooks/useClipboard'
 import { useToast } from '../../hooks/useToast'
+import { useAuth } from '../../context/AuthContext'
 import './UrlTable.css'
 
-const UrlTable = ({ 
-  urls, 
-  onDeleteUrl, 
-  onRowClick, 
-  copiedId: externalCopiedId, 
-  onCopyToClipboard: externalCopyToClipboard 
+const UrlTable = ({
+  urls,
+  onDeleteUrl,
+  onRowClick,
+  copiedId: externalCopiedId,
+  onCopyToClipboard: externalCopyToClipboard
 }) => {
   const internalClipboard = useClipboard()
   const { showSuccess, showError, showInfo } = useToast()
-  
+  const { user } = useAuth()
+
   // Use external clipboard functions if provided, otherwise use internal ones
   const copiedId = externalCopiedId !== undefined ? externalCopiedId : internalClipboard.copiedId
   const copyToClipboard = externalCopyToClipboard || (async (text, id) => {
@@ -47,11 +49,11 @@ const UrlTable = ({
           </thead>
           <tbody>
             {urls.map((url) => (
-              <tr 
-                key={url.id} 
-                className={`url-row ${onRowClick ? 'clickable-row' : ''}`}
-                onClick={url.qrEnabled && onRowClick ? () => onRowClick(url) : undefined}
-                style={onRowClick ? { cursor: 'pointer' } : {}}
+              <tr
+                key={url.id}
+                className={`url-row ${user && onRowClick ? 'clickable-row' : ''}`}
+                onClick={user && onRowClick ? () => onRowClick(url) : undefined}
+                style={user && onRowClick ? { cursor: 'pointer' } : {}}
               >
                 <td className="original-url-cell" data-label="Original URL">
                   <div className="url-cell-content">

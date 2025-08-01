@@ -1,9 +1,15 @@
-import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../hooks/useToast'
 import './Navigation.css'
 
 const Navigation = ({ onAuthModalOpen, onMobileSidebarOpen }) => {
-  const { user, logout, isGuest } = useAuth()
+  const { user, guestId, logout, isGuest } = useAuth()
+  const { showSuccess } = useToast()
+
+  const handleLogout = async () => {
+    const message = await logout()
+    showSuccess(message)
+  }
 
   return (
     <nav className="navbar">
@@ -17,31 +23,19 @@ const Navigation = ({ onAuthModalOpen, onMobileSidebarOpen }) => {
           <div className="desktop-nav">
             {user ? (
               <div className="user-menu">
-                <span className="user-greeting">Hello, {user.split('@')[0]}!</span>
-                <Link to="/dashboard" className="dashboard-link">
-                  Dashboard
-                </Link>
-                <button onClick={logout} className="logout-btn">
+                <span className="user-greeting">Hello, {user.name || (user.email ? user.email.split('@')[0] : 'User')}!</span>
+                <button onClick={handleLogout} className="logout-btn">
                   Sign Out
                 </button>
               </div>
             ) : isGuest ? (
               <div className="guest-menu">
-                <div className="guest-indicator">
-                  <span className="guest-icon">🎭</span>
-                  <span className="guest-text">Guest Mode</span>
-                </div>
+                <span className="user-greeting">Hello, {guestId}!</span>
                 <button
                   onClick={() => onAuthModalOpen('signin')}
                   className="signin-btn"
                 >
                   Sign In
-                </button>
-                <button
-                  onClick={() => onAuthModalOpen('signup')}
-                  className="signup-btn"
-                >
-                  Sign Up
                 </button>
               </div>
             ) : (
@@ -51,12 +45,6 @@ const Navigation = ({ onAuthModalOpen, onMobileSidebarOpen }) => {
                   className="signin-btn"
                 >
                   Sign In
-                </button>
-                <button
-                  onClick={() => onAuthModalOpen('signup')}
-                  className="signup-btn"
-                >
-                  Sign Up
                 </button>
               </div>
             )}

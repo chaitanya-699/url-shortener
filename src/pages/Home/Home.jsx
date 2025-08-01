@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { generateShortCode, generateRandomClicks } from '../../utils/urlUtils'
 import { generateDummyAnalytics } from '../../utils/demoData'
@@ -25,7 +24,15 @@ const Home = () => {
 
   const { user, guestId, createGuestSession, isGuest } = useAuth()
   const { copiedId, copyToClipboard } = useClipboard()
-  const navigate = useNavigate()
+
+  // Update existing URLs when user signs in/out
+  useEffect(() => {
+    setShortenedUrls(prev => prev.map(url => ({
+      ...url,
+      qrEnabled: !!user,
+      isGuest: !user
+    })))
+  }, [user])
 
   const handleShortenUrl = async (originalUrl) => {
     setIsLoading(true)

@@ -10,5 +10,6 @@ export default defineConfig({
     // Remove hardcoded origin - use environment variable if needed
     // origin: process.env.VITE_ORIGIN_URL,
     strictPort: true, // Optional: prevent port fallback
+    allowedHosts :["b91f1cd30145.ngrok-free.app"],
   },
 });

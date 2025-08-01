@@ -5,7 +5,7 @@ const AuthContext = createContext()
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    return {}
   }
   return context
 }
@@ -26,31 +26,52 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    // Check if user is logged in on app start
-    try {
-      const savedUser = localStorage.getItem('urlShortener_user')
-      const savedGuestId = localStorage.getItem('urlShortener_guestId')
-      
-      if (savedUser) {
-        setUser(savedUser)
-      } else if (savedGuestId) {
-        setGuestId(savedGuestId)
+    // Check if user is logged in via JWT token in HTTP cookie
+    const checkAuthStatus = async () => {
+      console.log("Called")
+      try {
+        const response = await fetch('http://localhost:8080/api/auth/login/me', {
+          method: 'GET',
+          credentials: 'include',
+        })
+
+        const userData = await response.json()
+        console.log(userData.message)
+        if (response.ok && userData.id && userData.email) {
+          setUser({
+            id: userData.id,
+            email: userData.email,
+            name: userData.name
+          })
+        } else {
+          // User not authenticated, check for guest session
+          const savedGuestId = localStorage.getItem('urlShortener_guestId')
+          if (savedGuestId) {
+            setGuestId(savedGuestId)
+          }
+        }
+      } catch (error) {
+        // Fallback to guest session if available
+        const savedGuestId = localStorage.getItem('urlShortener_guestId')
+        if (savedGuestId) {
+          setGuestId(savedGuestId)
+        }
+      } finally {
+        setIsLoading(false)
       }
-    } catch (error) {
-      console.error('Error loading auth state from localStorage:', error)
-    } finally {
-      setIsLoading(false)
     }
+
+    checkAuthStatus()
   }, [])
 
-  const login = (email) => {
+  const login = (userData) => {
     try {
-      setUser(email)
+      setUser(userData)
       setGuestId(null)
-      localStorage.setItem('urlShortener_user', email)
+      // Remove guest session when user logs in
       localStorage.removeItem('urlShortener_guestId')
     } catch (error) {
-      console.error('Error saving user to localStorage:', error)
+      console.error('Error during login:', error)
     }
   }
 
@@ -66,16 +87,29 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const logout = () => {
+  const logout = async () => {
     try {
+      // Call backend logout endpoint to clear HTTP cookie
+      const response = await fetch('http://localhost:8080/api/logout', {
+        method: 'GET',
+        credentials: 'include',
+      })
+
+      const result = await response.json()
+
       setUser(null)
       setGuestId(null)
-      localStorage.removeItem('urlShortener_user')
       localStorage.removeItem('urlShortener_guestId')
-      // Optionally clear user's URLs on logout
-      // localStorage.removeItem(`urls_${user}`)
+
+      // Return server message for toast display
+      return result.message || 'Logged out successfully'
     } catch (error) {
       console.error('Error during logout:', error)
+      // Even if logout request fails, clear local state
+      setUser(null)
+      setGuestId(null)
+      localStorage.removeItem('urlShortener_guestId')
+      return 'Logged out successfully'
     }
   }
 

@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../hooks/useToast'
 import SocialAuth from './SocialAuth'
+import ForgotPasswordModal from './ForgotPasswordModal'
 import './AuthModal.css'
 
 const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
   const [formData, setFormData] = useState({ email: '', password: '', guestId: '' })
   const [isLoading, setIsLoading] = useState(false)
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
   const { login } = useAuth()
-  const navigate = useNavigate()
   const { showSuccess, showError } = useToast()
 
   if (!isOpen) return null
@@ -19,41 +19,142 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
     setIsLoading(true)
 
     try {
+      let success = false
+      
       if (mode === 'guest') {
-        if (!formData.guestId.trim()) {
-          showError('Please enter your Guest ID')
-          return
-        }
-
-        if (formData.guestId.startsWith('guest_')) {
-          localStorage.setItem('urlShortener_guestId', formData.guestId)
-          showSuccess('Guest session restored!')
-          setTimeout(() => window.location.reload(), 1000)
-        } else {
-          showError('Invalid Guest ID format. Guest IDs start with "guest_"')
-          return
-        }
-      } else {
-        if (!formData.email || !formData.password) {
-          showError('Please enter email and password')
-          return
-        }
-
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000))
-
-        login(formData.email)
-        showSuccess(mode === 'signup' ? 'Account created successfully!' : 'Signed in successfully!')
-        navigate('/dashboard')
+        success = await handleGuestLogin(formData.guestId)
+      } else if (mode === 'signin') {
+        success = await handleSignIn(formData.email, formData.password)
+      } else if (mode === 'signup') {
+        success = await handleSignUp(formData.email, formData.password)
       }
 
-      onClose()
-      setFormData({ email: '', password: '', guestId: '' })
+      // Only close modal and clear form if operation was successful
+      if (success) {
+        onClose()
+        setFormData({ email: '', password: '', guestId: '' })
+      }
     } catch (error) {
+      console.log('Form submission error:', error)
       showError('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleSignIn = async (email, password) => {
+    if (!email || !password) {
+      console.log('Error: Please enter email and password')
+      showError('Please enter email and password')
+      return false
+    }
+
+    const response = await fetch('http://localhost:8080/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ email, password }),
+    })
+
+    const userData = await response.json()
+
+    if (response.ok && userData.id && userData.email) {
+      // Success: Backend returns {id, message, email, name}
+      login({
+        id: userData.id,
+        email: userData.email,
+        name: userData.name
+      })
+      showSuccess(userData.message || 'Signed in successfully!')
+      return true
+    } else {
+      // Error: Backend returns {message: "email not found"} or similar
+      console.log('Login failed:', userData.message)
+      showError(userData.message || 'Login failed')
+      return false
+    }
+  }
+
+  const handleSignUp = async (email, password) => {
+    if (!email || !password) {
+      console.log('Error: Please enter email and password')
+      showError('Please enter email and password')
+      return false
+    }
+
+    if (password.length < 8) {
+      console.log('Error: Password must be at least 8 characters long')
+      showError('Password must be at least 8 characters long')
+      return false
+    }
+
+    const response = await fetch('http://localhost:8080/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ email, password }),
+    })
+
+    const userData = await response.json()
+
+    if (response.ok && userData.id && userData.email) {
+      // Success: Backend returns {id, message, email, name}
+      login({
+        id: userData.id,
+        email: userData.email,
+        name: userData.name
+      })
+      showSuccess(userData.message || 'Account created successfully!')
+      return true
+    } else {
+      // Error: Backend returns {message: "email already exists"} or similar
+      console.log('Registration failed:', userData.message)
+      showError(userData.message || 'Registration failed')
+      return false
+    }
+  }
+
+  const handleGuestLogin = async (guestId) => {
+    if (!guestId.trim()) {
+      console.log('Error: Please enter your Guest ID')
+      showError('Please enter your Guest ID')
+      return false
+    }
+
+    if (!guestId.startsWith('guest_')) {
+      console.log('Error: Invalid Guest ID format')
+      showError('Invalid Guest ID format. Guest IDs start with "guest_"')
+      return false
+    }
+
+    // TODO: Implement actual guest session validation
+    const response = await fetch('/api/auth/guest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ guestId }),
+    })
+
+    if (!response.ok) {
+      console.log('Guest login failed:', response.status)
+      showError('Guest session not found')
+      return false
+    }
+
+    const data = await response.json()
+
+    // Store guest session
+    localStorage.setItem('urlShortener_guestId', guestId)
+    localStorage.setItem('guestData', JSON.stringify(data))
+
+    showSuccess(data.message || 'Guest session restored!')
+    setTimeout(() => window.location.reload(), 1000)
+    return true
   }
 
   const switchMode = (newMode) => {
@@ -61,23 +162,69 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
     setFormData({ email: '', password: '', guestId: '' })
   }
 
+  const handleForgotPasswordClick = () => {
+    setShowForgotPassword(true)
+  }
+
+  const handleForgotPasswordClose = () => {
+    setShowForgotPassword(false)
+  }
+
+  const handleBackToSignIn = () => {
+    setShowForgotPassword(false)
+    onModeChange('signin')
+  }
+
+  const handleForgotPasswordSuccess = () => {
+    setShowForgotPassword(false)
+    onClose() // Close the main AuthModal as well
+  }
+
   const handleSocialAuth = async (provider) => {
     setIsLoading(true)
 
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      if (provider === 'google') {
+        await handleGoogleAuth()
+      } else if (provider === 'github') {
+        await handleGithubAuth()
+      }
 
-      const email = provider === 'google' ? 'user@gmail.com' : 'user@github.com'
-      login(email)
-      showSuccess(`Signed in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}!`)
-      navigate('/dashboard')
       onClose()
     } catch (error) {
+      console.log(`Social auth error with ${provider}:`, error)
       showError(`Failed to sign in with ${provider}. Please try again.`)
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleGoogleAuth = async () => {
+    // TODO: Implement Google OAuth
+    // Option 1: Redirect to backend OAuth endpoint
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google'
+
+    // Option 2: Use Google OAuth popup (if using client-side)
+    // const response = await googleOAuthPopup()
+    // const data = await response.json()
+    // localStorage.setItem('token', data.token)
+    // login(data.user)
+    // showSuccess('Signed in with Google!')
+    // navigate('/dashboard')
+  }
+
+  const handleGithubAuth = async () => {
+    // TODO: Implement GitHub OAuth
+    // Option 1: Redirect to backend OAuth endpoint
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github'
+    
+    // Option 2: Use GitHub OAuth popup (if using client-side)
+    // const response = await githubOAuthPopup()
+    // const data = await response.json()
+    // localStorage.setItem('token', data.token)
+    // login(data.user)
+    // showSuccess('Signed in with GitHub!')
+    // navigate('/dashboard')
   }
 
   return (
@@ -135,20 +282,38 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
                   id="password"
                   value={formData.password}
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  placeholder="Enter your password"
+                  placeholder={mode === 'signup' ? 'At least 8 characters' : 'Enter your password'}
+                  minLength={mode === 'signup' ? 8 : undefined}
                   required
                 />
+                {mode === 'signup' && formData.password && formData.password.length < 8 && (
+                  <small className="password-hint">Password must be at least 8 characters</small>
+                )}
               </div>
+
             </>
           )}
 
-          <button type="submit" className="auth-submit-btn" disabled={isLoading}>
-            {isLoading ? 'Please wait...' : (
-              mode === 'signin' ? 'Sign In' :
-                mode === 'signup' ? 'Create Account' :
-                  'Access Guest Session'
-            )}
-          </button>
+          {mode === 'signin' ? (
+            <div className="signin-actions">
+              <button
+                type="button"
+                className="forgot-password-btn"
+                onClick={handleForgotPasswordClick}
+              >
+                Forgot password?
+              </button>
+              <button type="submit" className="auth-submit-btn" disabled={isLoading}>
+                {isLoading ? 'Please wait...' : 'Sign In'}
+              </button>
+            </div>
+          ) : (
+            <button type="submit" className="auth-submit-btn" disabled={isLoading}>
+              {isLoading ? 'Please wait...' : (
+                mode === 'signup' ? 'Create Account' : 'Access Guest Session'
+              )}
+            </button>
+          )}
         </form>
 
         {mode !== 'guest' && (
@@ -195,9 +360,12 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
           </div>
         )}
 
-        <div className="demo-notice">
-          <p>Demo: Any email and password will work!</p>
-        </div>
+        <ForgotPasswordModal
+          isOpen={showForgotPassword}
+          onClose={handleForgotPasswordClose}
+          onBackToSignIn={handleBackToSignIn}
+          onSuccess={handleForgotPasswordSuccess}
+        />
       </div>
     </div>
   )
