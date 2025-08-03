@@ -4,7 +4,7 @@ import { useToast } from '../../hooks/useToast'
 import './MobileSidebar.css'
 
 const MobileSidebar = ({ isOpen, onClose, onAuthModalOpen }) => {
-  const { user, logout, isGuest } = useAuth()
+  const { user, logout, guestSignout, isGuest } = useAuth()
   const { showSuccess } = useToast()
 
   const handleLogout = async () => {
@@ -13,10 +13,14 @@ const MobileSidebar = ({ isOpen, onClose, onAuthModalOpen }) => {
     onClose()
   }
 
-  if (!isOpen) return null
+  const handleGuestSignout = () => {
+    const message = guestSignout()
+    showSuccess(message)
+    onClose()
+  }
 
   return (
-    <div className="mobile-sidebar-overlay active" onClick={onClose}>
+    <div className={`mobile-sidebar-overlay ${isOpen ? 'active' : ''}`} onClick={onClose}>
       <div className="mobile-sidebar" onClick={(e) => e.stopPropagation()}>
         <div className="mobile-sidebar-header">
           <h3>🔗 URL Shortener</h3>
@@ -79,6 +83,12 @@ const MobileSidebar = ({ isOpen, onClose, onAuthModalOpen }) => {
                 className="mobile-nav-btn guest"
               >
                 🎭 Guest Login
+              </button>
+              <button
+                onClick={handleGuestSignout}
+                className="mobile-nav-btn guest-signout"
+              >
+                🗑️ Clear Session
               </button>
             </div>
           ) : (

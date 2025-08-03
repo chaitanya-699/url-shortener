@@ -1,7 +1,7 @@
 import { formatDate } from '../../utils/urlUtils'
 import './UrlDetailsModal.css'
 
-const UrlDetailsModal = ({ isOpen, onClose, url }) => {
+const UrlDetailsModal = ({ isOpen, onClose, url, onQrCodeClick }) => {
   if (!isOpen || !url) return null
 
   return (
@@ -70,6 +70,22 @@ const UrlDetailsModal = ({ isOpen, onClose, url }) => {
                 <div className="stat-number">{url.analytics.clicksThisWeek}</div>
                 <div className="stat-label">This Week</div>
               </div>
+              <div className="stat-card">
+                <div className="stat-number">{url.analytics.clicksThisMonth}</div>
+                <div className="stat-label">This Month</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{url.analytics.clicksLastMonth}</div>
+                <div className="stat-label">Last Month</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{url.analytics.averageClicksPerDay?.toFixed(1) || 0}</div>
+                <div className="stat-label">Avg/Day</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">{url.analytics.peakClickDay?.date || 'N/A'}</div>
+                <div className="stat-label">Peak Day</div>
+              </div>
             </div>
           </div>
 
@@ -109,6 +125,80 @@ const UrlDetailsModal = ({ isOpen, onClose, url }) => {
                   <span className="device-percentage">{item.percentage}%</span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Operating Systems */}
+          <div className="os-section">
+            <h3>💻 Operating Systems</h3>
+            <div className="os-list">
+              {url.analytics.operatingSystems.map((item, index) => (
+                <div key={index} className="os-item">
+                  <span className="os-name">{item.os || item.name || 'Unknown'}</span>
+                  <span className="os-clicks">{item.clicks || item.count || 0} clicks</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Top Referrers */}
+          <div className="referrer-section">
+            <h3>🔗 Top Referrers</h3>
+            <div className="referrer-list">
+              {url.analytics.topReferrers.map((item, index) => (
+                <div key={index} className="referrer-item">
+                  <span className="referrer-name">{item.referrer || item.source || 'Direct'}</span>
+                  <span className="referrer-clicks">{item.clicks || item.count || 0} clicks</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* IP Analytics */}
+          <div className="ip-section">
+            <h3>🌐 IP Analytics</h3>
+            <div className="ip-list">
+              {url.analytics.ipTables.map((item, index) => (
+                <div key={index} className="ip-item">
+                  <span className="ip-address">{item.ip || 'Unknown IP'}</span>
+                  <span className="ip-clicks">{item.clicks || item.count || 0} clicks</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* URL Status & QR Code */}
+          <div className="status-section">
+            <h3>⚙️ URL Status</h3>
+            <div className="status-grid">
+              <div className="status-item">
+                <label>Active:</label>
+                <span className={url.active ? 'status-active' : 'status-inactive'}>
+                  {url.active ? '✅ Active' : '❌ Inactive'}
+                </span>
+              </div>
+              <div className="status-item">
+                <label>Blocked:</label>
+                <span className={url.blocked ? 'status-blocked' : 'status-unblocked'}>
+                  {url.blocked ? '🚫 Blocked' : '✅ Not Blocked'}
+                </span>
+              </div>
+              {url.description && (
+                <div className="status-item">
+                  <label>Description:</label>
+                  <span className="url-description">{url.description}</span>
+                </div>
+              )}
+              <div className="status-item">
+                <label>QR Code:</label>
+                <button 
+                  onClick={() => onQrCodeClick && onQrCodeClick(url)}
+                  className="qr-link"
+                  type="button"
+                >
+                  📱 View QR Code
+                </button>
+              </div>
             </div>
           </div>
 

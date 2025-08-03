@@ -3,11 +3,16 @@ import { useToast } from '../../hooks/useToast'
 import './Navigation.css'
 
 const Navigation = ({ onAuthModalOpen, onMobileSidebarOpen }) => {
-  const { user, guestId, logout, isGuest } = useAuth()
+  const { user, guestId, logout, guestSignout, isGuest } = useAuth()
   const { showSuccess } = useToast()
 
   const handleLogout = async () => {
     const message = await logout()
+    showSuccess(message)
+  }
+
+  const handleGuestSignout = () => {
+    const message = guestSignout()
     showSuccess(message)
   }
 
@@ -36,6 +41,12 @@ const Navigation = ({ onAuthModalOpen, onMobileSidebarOpen }) => {
                   className="signin-btn"
                 >
                   Sign In
+                </button>
+                <button
+                  onClick={handleGuestSignout}
+                  className="logout-btn guest-signout"
+                >
+                  Clear Session
                 </button>
               </div>
             ) : (

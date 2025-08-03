@@ -147,4 +147,58 @@
   .home-content {
     padding: 0.75rem;
   }
+}/* R
+esults Header with Refresh Button */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.results-header h2 {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.refresh-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.refresh-btn:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.refresh-btn:active {
+  transform: translateY(0);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .refresh-btn {
+    align-self: flex-end;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
 }

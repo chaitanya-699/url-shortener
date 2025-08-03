@@ -8,11 +8,14 @@ const UrlTable = ({
   onDeleteUrl,
   onRowClick,
   copiedId: externalCopiedId,
-  onCopyToClipboard: externalCopyToClipboard
+  onCopyToClipboard: externalCopyToClipboard,
+  onQrCodeClick
 }) => {
   const internalClipboard = useClipboard()
   const { showSuccess, showError, showInfo } = useToast()
   const { user } = useAuth()
+
+
 
   // Use external clipboard functions if provided, otherwise use internal ones
   const copiedId = externalCopiedId !== undefined ? externalCopiedId : internalClipboard.copiedId
@@ -43,6 +46,8 @@ const UrlTable = ({
             <tr>
               <th>Original URL</th>
               <th>Shortened URL</th>
+              <th>Created</th>
+              {user && <th>Analytics</th>}
               <th>QR Code</th>
               <th>Delete</th>
             </tr>
@@ -57,10 +62,17 @@ const UrlTable = ({
               >
                 <td className="original-url-cell" data-label="Original URL">
                   <div className="url-cell-content">
-                    <div className="url-text-scroll">
-                      <span className="url-text" title={url.originalUrl}>
-                        {url.originalUrl}
-                      </span>
+                    <div className="url-info">
+                      <div className="url-text-scroll">
+                        <span className="url-text" title={url.originalUrl}>
+                          {url.originalUrl}
+                        </span>
+                      </div>
+                      {url.description && (
+                        <div className="url-description" title={url.description}>
+                          {url.description}
+                        </div>
+                      )}
                     </div>
                     <button
                       onClick={(e) => {
@@ -109,31 +121,58 @@ const UrlTable = ({
                     </button>
                   </div>
                 </td>
-                <td className="qr-cell" data-label="QR Code">
-                  {url.qrEnabled ? (
-                    <button
-                      onClick={(e) => {
-                        if (onRowClick) e.stopPropagation()
-                        showInfo('QR Code feature would be implemented here')
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault()
-                          if (onRowClick) e.stopPropagation()
-                          showInfo('QR Code feature would be implemented here')
-                        }
-                      }}
-                      className="qr-btn"
-                      title="Generate QR Code"
-                      aria-label="Generate QR Code"
-                    >
-                      📱 QR
-                    </button>
-                  ) : (
-                    <span className="qr-disabled" title="Login required for QR codes">
-                      ❌ Login
+                <td className="created-cell" data-label="Created">
+                  <div className="created-info">
+                    <span className="created-date">
+                      {url.createdAt ? new Date(url.createdAt).toLocaleDateString() : 'Unknown'}
                     </span>
-                  )}
+                    <span className="created-time">
+                      {url.createdAt ? new Date(url.createdAt).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      }) : ''}
+                    </span>
+                  </div>
+                </td>
+                {user && (
+                  <td className="analytics-cell" data-label="Analytics">
+                    <div className="analytics-summary">
+                      <div className="clicks-count">
+                        <span className="clicks-number">{url.totalClicks || 0}</span>
+                        <span className="clicks-label">clicks</span>
+                      </div>
+                      {url.analyticsDto && (
+                        <div className="analytics-details">
+                          <small>Today: {url.analyticsDto.clicksToday || 0}</small>
+                          <small>Week: {url.analyticsDto.clicksThisWeek || 0}</small>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                )}
+                <td className="qr-cell" data-label="QR Code">
+                  <button
+                    onClick={(e) => {
+                      if (onRowClick) e.stopPropagation()
+                      if (onQrCodeClick) {
+                        onQrCodeClick(url)
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        if (onRowClick) e.stopPropagation()
+                        if (onQrCodeClick) {
+                          onQrCodeClick(url)
+                        }
+                      }
+                    }}
+                    className="qr-btn"
+                    title="View QR Code"
+                    aria-label="View QR Code"
+                  >
+                    📱 QR
+                  </button>
                 </td>
                 <td className="delete-cell" data-label="Actions">
                   <button

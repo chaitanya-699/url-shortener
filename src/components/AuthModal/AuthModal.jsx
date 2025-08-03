@@ -20,7 +20,7 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
 
     try {
       let success = false
-      
+
       if (mode === 'guest') {
         success = await handleGuestLogin(formData.guestId)
       } else if (mode === 'signin') {
@@ -60,10 +60,10 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
 
     const userData = await response.json()
 
-    if (response.ok && userData.id && userData.email) {
-      // Success: Backend returns {id, message, email, name}
+    if (response.ok && (userData.id || userData.userId) && userData.email) {
+      // Success: Backend returns {userId, message, email, name} or {id, message, email, name}
       login({
-        id: userData.id,
+        id: userData.id || userData.userId,
         email: userData.email,
         name: userData.name
       })
@@ -71,7 +71,6 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
       return true
     } else {
       // Error: Backend returns {message: "email not found"} or similar
-      console.log('Login failed:', userData.message)
       showError(userData.message || 'Login failed')
       return false
     }
@@ -101,10 +100,10 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
 
     const userData = await response.json()
 
-    if (response.ok && userData.id && userData.email) {
-      // Success: Backend returns {id, message, email, name}
+    if (response.ok && (userData.id || userData.userId) && userData.email) {
+      // Success: Backend returns {userId, message, email, name} or {id, message, email, name}
       login({
-        id: userData.id,
+        id: userData.id || userData.userId,
         email: userData.email,
         name: userData.name
       })
@@ -131,12 +130,12 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
       return false
     }
 
-    // TODO: Implement actual guest session validation
-    const response = await fetch('/api/auth/guest', {
+    const response = await fetch('http://localhost:8080/api/auth/login/guest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({ guestId }),
     })
 
@@ -217,7 +216,7 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
     // TODO: Implement GitHub OAuth
     // Option 1: Redirect to backend OAuth endpoint
     window.location.href = 'http://localhost:8080/oauth2/authorization/github'
-    
+
     // Option 2: Use GitHub OAuth popup (if using client-side)
     // const response = await githubOAuthPopup()
     // const data = await response.json()

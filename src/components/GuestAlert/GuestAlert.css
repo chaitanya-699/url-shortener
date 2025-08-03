@@ -65,6 +65,13 @@
   border: 1px solid #374151;
 }
 
+.guest-alert-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
 .guest-alert-btn {
   padding: 0.75rem 1.5rem;
   background: #2563eb;
@@ -77,9 +84,23 @@
   flex-shrink: 0;
 }
 
-.guest-alert-btn:hover {
+.guest-alert-btn:hover:not(:disabled) {
   background: #1d4ed8;
   transform: translateY(-1px);
+}
+
+.guest-alert-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.guest-login-btn {
+  background: #059669;
+}
+
+.guest-login-btn:hover:not(:disabled) {
+  background: #047857;
 }
 
 /* Mobile responsive */
@@ -92,6 +113,11 @@
 
   .guest-alert-icon {
     font-size: 1.5rem;
+  }
+
+  .guest-alert-actions {
+    align-self: stretch;
+    flex-direction: column;
   }
 
   .guest-alert-btn {

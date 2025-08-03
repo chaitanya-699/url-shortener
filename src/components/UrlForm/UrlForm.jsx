@@ -5,6 +5,7 @@ import './UrlForm.css'
 
 const UrlForm = ({ onSubmit, isLoading }) => {
   const [url, setUrl] = useState('')
+  const [description, setDescription] = useState('')
   const [error, setError] = useState('')
   const { showError } = useToast()
 
@@ -29,8 +30,9 @@ const UrlForm = ({ onSubmit, isLoading }) => {
       return
     }
 
-    onSubmit(normalizedUrl)
+    onSubmit(normalizedUrl, description.trim())
     setUrl('')
+    setDescription('')
     setError('')
   }
 
@@ -43,15 +45,33 @@ const UrlForm = ({ onSubmit, isLoading }) => {
     <div className="url-form-section">
       <h2>Shorten a URL</h2>
       <form onSubmit={handleSubmit} className="url-form">
-        <div className="input-group">
-          <input
-            type="text"
-            value={url}
-            onChange={handleInputChange}
-            placeholder="Enter your long URL here..."
-            className={`url-input ${error ? 'url-input-error' : ''}`}
-            disabled={isLoading}
-          />
+        <div className="form-fields">
+          <div className="input-group">
+            <input
+              type="text"
+              value={url}
+              onChange={handleInputChange}
+              placeholder="Enter your long URL here..."
+              className={`url-input ${error ? 'url-input-error' : ''}`}
+              disabled={isLoading}
+            />
+          </div>
+          
+          <div className="description-group">
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Add a description (optional)..."
+              className="description-input"
+              disabled={isLoading}
+              maxLength={100}
+            />
+            <small className="description-hint">
+              {description.length}/100 characters
+            </small>
+          </div>
+
           <button
             type="submit"
             className="shorten-btn"
