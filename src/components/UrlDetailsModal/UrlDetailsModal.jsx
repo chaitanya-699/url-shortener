@@ -1,4 +1,4 @@
-import { formatDate } from '../../utils/urlUtils'
+import { formatDate, maskIpAddress } from '../../utils/urlUtils'
 import './UrlDetailsModal.css'
 
 const UrlDetailsModal = ({ isOpen, onClose, url, onQrCodeClick }) => {
@@ -197,7 +197,7 @@ const UrlDetailsModal = ({ isOpen, onClose, url, onQrCodeClick }) => {
             <div className="ip-list">
               {url.analytics.ipTables.map((item, index) => (
                 <div key={index} className="ip-item">
-                  <span className="ip-address">{item.ip || 'Unknown IP'}</span>
+                  <span className="ip-address">{maskIpAddress(item.ip)}</span>
                   <span className="ip-clicks">{item.clicks || item.count || 0} clicks</span>
                 </div>
               ))}
@@ -222,8 +222,9 @@ const UrlDetailsModal = ({ isOpen, onClose, url, onQrCodeClick }) => {
               </div>
               {url.description && (
                 <div className="status-item">
-                  <label>Description:</label>
-                  <span className="url-description">{url.description}</span>
+                  <label>Description : <br />   {url.description}</label>
+
+                  <span className="url-description"> {url.description} </span>
                 </div>
               )}
               <div className="status-item">

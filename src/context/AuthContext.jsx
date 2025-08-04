@@ -183,6 +183,10 @@ export const AuthProvider = ({ children }) => {
         console.log('🎯 Target domain:', 'masterwayne.duckdns.org')
         console.log('🔒 Using HTTPS:', window.location.protocol === 'https:')
 
+        // Add timeout to the fetch request
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+
         const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/me', {
           method: 'GET',
           credentials: 'include', // This should send cookies
@@ -190,7 +194,10 @@ export const AuthProvider = ({ children }) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
+          signal: controller.signal
         })
+
+        clearTimeout(timeoutId)
 
         console.log('📊 Auth check response status:', response.status)
         console.log('✅ Auth check response ok:', response.ok)
@@ -250,6 +257,11 @@ export const AuthProvider = ({ children }) => {
           message: error.message,
           stack: error.stack
         })
+
+        // Check if it's a timeout error
+        if (error.name === 'AbortError') {
+          console.error('⏰ Auth check timed out after 10 seconds')
+        }
 
         // Check if it's a CORS error
         if (error.message.includes('CORS') || error.message.includes('cross-origin')) {

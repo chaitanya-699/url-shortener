@@ -1,3 +1,70 @@
+/* Loading Animation */
+.navigation-loading {
+  background: linear-gradient(90deg, #1a2332 25%, #2d3748 50%, #1a2332 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  min-height: 80px;
+  border-bottom: 1px solid #2d3748;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navigation-loading .nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.navigation-loading .nav-brand-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navigation-loading .nav-logo-skeleton {
+  width: 24px;
+  height: 24px;
+  background: #4a5568;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+.navigation-loading .nav-title-skeleton {
+  width: 120px;
+  height: 20px;
+  background: #4a5568;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+.navigation-loading .nav-actions-skeleton {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.navigation-loading .nav-button-skeleton {
+  width: 80px;
+  height: 36px;
+  background: #4a5568;
+  border-radius: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
 /* Navigation Bar */
 .navbar {
   background: #1a2332;

@@ -1,3 +1,88 @@
+/* Loading Animation */
+.auth-modal-loading {
+  background: #2d3748;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid #4a5568;
+}
+
+.auth-modal-loading-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.auth-modal-loading-title {
+  width: 120px;
+  height: 24px;
+  background: linear-gradient(90deg, #4a5568 25%, #6b7280 50%, #4a5568 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.auth-modal-loading-close {
+  width: 30px;
+  height: 30px;
+  background: #4a5568;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.auth-modal-loading-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-modal-loading-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auth-modal-loading-label {
+  width: 60px;
+  height: 16px;
+  background: linear-gradient(90deg, #4a5568 25%, #6b7280 50%, #4a5568 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.auth-modal-loading-input {
+  width: 100%;
+  height: 40px;
+  background: #1a2332;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  animation: pulse 1.5s infinite;
+}
+
+.auth-modal-loading-button {
+  width: 100%;
+  height: 44px;
+  background: linear-gradient(90deg, #2563eb 25%, #3b82f6 50%, #2563eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 /* Authentication Modal */
 .modal-overlay {
   position: fixed;

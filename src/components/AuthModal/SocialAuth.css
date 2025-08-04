@@ -1,3 +1,149 @@
+/* Loading Animation */
+.social-auth-loading {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.social-auth-loading-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.social-auth-loading-divider::before,
+.social-auth-loading-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #4a5568;
+}
+
+.social-auth-loading-divider-text {
+  width: 20px;
+  height: 14px;
+  background: linear-gradient(90deg, #4a5568 25%, #6b7280 50%, #4a5568 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin: 0 1rem;
+}
+
+.social-auth-loading-btn {
+  height: 40px;
+  background: linear-gradient(90deg, #f7fafc 25%, #edf2f7 50%, #f7fafc 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Loading Animation */
+.social-auth-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.social-auth-loading-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.social-auth-loading-divider::before,
+.social-auth-loading-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #4a5568 25%, #6b7280 50%, #4a5568 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.social-auth-loading-divider-text {
+  padding: 0 1rem;
+  width: 40px;
+  height: 14px;
+  background: linear-gradient(90deg, #4a5568 25%, #6b7280 50%, #4a5568 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.social-auth-loading-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.social-auth-loading-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  background: linear-gradient(90deg, #f7fafc 25%, #edf2f7 50%, #f7fafc 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  height: 40px;
+}
+
+.social-auth-loading-icon {
+  width: 20px;
+  height: 20px;
+  background: #cbd5e0;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+  flex-shrink: 0;
+}
+
+.social-auth-loading-text {
+  width: 60px;
+  height: 14px;
+  background: #cbd5e0;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* Mobile responsive for loading */
+@media (max-width: 480px) {
+  .social-auth-loading-btn {
+    padding: 0.875rem;
+    height: 44px;
+  }
+
+  .social-auth-loading-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .social-auth-loading-text {
+    width: 50px;
+  }
+}
+
 /* Social Authentication Styles */
 .divider {
   display: flex;

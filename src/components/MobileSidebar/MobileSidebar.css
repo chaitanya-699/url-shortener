@@ -1,3 +1,88 @@
+/* Loading Animation */
+.mobile-sidebar-loading {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 320px;
+  background: linear-gradient(145deg, #1a2332 0%, #2d3748 100%);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+}
+
+.mobile-sidebar-loading-header {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-sidebar-loading-title {
+  width: 150px;
+  height: 22px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.mobile-sidebar-loading-close {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+.mobile-sidebar-loading-content {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mobile-sidebar-loading-section {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.mobile-sidebar-loading-greeting {
+  width: 120px;
+  height: 18px;
+  background: linear-gradient(90deg, #4a5568 25%, #6b7280 50%, #4a5568 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.mobile-sidebar-loading-button {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(90deg, #2563eb 25%, #3b82f6 50%, #2563eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 /* Mobile Sidebar */
 .mobile-sidebar-overlay {
   position: fixed;

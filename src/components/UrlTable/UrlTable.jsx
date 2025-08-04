@@ -70,11 +70,6 @@ const UrlTable = ({
                         {url.blocked && <span className="blocked-indicator" title="URL is blocked">🚫</span>}
                         {!url.active && <span className="inactive-indicator" title="URL is inactive">⏸️</span>}
                       </div>
-                      {url.description && (
-                        <div className="url-description" title={url.description}>
-                          {url.description}
-                        </div>
-                      )}
                     </div>
                     <button
                       onClick={(e) => {

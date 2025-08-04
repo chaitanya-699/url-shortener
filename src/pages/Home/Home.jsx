@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { generateDummyAnalytics } from '../../utils/demoData'
+import { maskIpAddress } from '../../utils/urlUtils'
 import { useClipboard } from '../../hooks/useClipboard'
 import { useToast } from '../../hooks/useToast'
 import Navigation from '../../components/Navigation/Navigation'
@@ -433,7 +434,7 @@ const Home = () => {
         
       ipTables: url.ipTables && url.ipTables.length > 0 ? 
         url.ipTables.map(item => ({
-          ip: item.ip || 'Unknown',
+          ip: maskIpAddress(item.ip),
           clicks: item.clicks || 0
         })) : [{ ip: 'No data available', clicks: 0 }],
         
@@ -444,7 +445,7 @@ const Home = () => {
           country: item.country || 'Unknown',
           browser: item.browser || 'Unknown',
           device: item.device || 'Unknown',
-          ip: item.ip || 'Unknown',
+          ip: maskIpAddress(item.ip),
           referred: item.referred || 'direct',
           userAgent: item.userAgent || ''
         })) : [{ timestamp: 'No recent clicks', country: '-', browser: '-', device: '-' }],
