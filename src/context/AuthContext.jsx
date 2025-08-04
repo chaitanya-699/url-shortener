@@ -27,48 +27,240 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // Test cookie functionality and sending
+  const testCookies = async () => {
+    console.log('🍪 Testing cookie functionality...')
+
+    // Check all cookies
+    console.log('📋 All cookies:', document.cookie)
+
+    // Parse cookies
+    const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+      if (cookie.trim()) {
+        const [name, value] = cookie.trim().split('=')
+        acc[name] = value
+      }
+      return acc
+    }, {})
+
+    console.log('🔍 Parsed cookies:', cookies)
+
+    // Look for common auth cookie names
+    const authCookieNames = ['JSESSIONID', 'JWT', 'auth', 'token', 'session', 'AUTH_TOKEN', 'Authorization']
+    const foundAuthCookies = []
+
+    authCookieNames.forEach(name => {
+      if (cookies[name]) {
+        console.log(`✅ Found auth cookie: ${name} = ${cookies[name]}`)
+        foundAuthCookies.push({ name, value: cookies[name] })
+      } else {
+        console.log(`❌ Missing auth cookie: ${name}`)
+      }
+    })
+
+    // Test if cookies are actually sent in requests
+    console.log('🧪 Testing if cookies are sent in requests...')
+
+    try {
+      const testResponse = await fetch('https://masterwayne.duckdns.org/api/auth/login/me', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
+
+      console.log('📡 Test request made with credentials: include')
+      console.log('📊 Response status:', testResponse.status)
+
+      // Check if the server received cookies by looking at response
+      const responseData = await testResponse.json().catch(() => null)
+      if (responseData) {
+        console.log('📄 Server response:', responseData)
+      }
+
+    } catch (error) {
+      console.error('❌ Test request failed:', error)
+    }
+
+    // Check browser cookie settings
+    console.log('🔧 Browser info:')
+    console.log('  - User Agent:', navigator.userAgent)
+    console.log('  - Cookie Enabled:', navigator.cookieEnabled)
+    console.log('  - Current Protocol:', window.location.protocol)
+    console.log('  - Current Host:', window.location.host)
+
+    return {
+      allCookies: document.cookie,
+      parsedCookies: cookies,
+      foundAuthCookies,
+      cookieEnabled: navigator.cookieEnabled
+    }
+  }
+
+  // Test CORS configuration
+  const testCORS = async () => {
+    console.log('🌐 Testing CORS configuration...')
+
+    try {
+      const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/me', {
+        method: 'OPTIONS',
+        headers: {
+          'Origin': window.location.origin,
+          'Access-Control-Request-Method': 'GET',
+          'Access-Control-Request-Headers': 'Content-Type',
+        },
+      })
+
+      console.log('🔍 CORS preflight response:', response.status)
+      console.log('📋 CORS headers:', Object.fromEntries(response.headers.entries()))
+
+      const allowOrigin = response.headers.get('Access-Control-Allow-Origin')
+      const allowMethods = response.headers.get('Access-Control-Allow-Methods')
+      const allowHeaders = response.headers.get('Access-Control-Allow-Headers')
+      const allowCredentials = response.headers.get('Access-Control-Allow-Credentials')
+
+      console.log('🎯 Access-Control-Allow-Origin:', allowOrigin)
+      console.log('📝 Access-Control-Allow-Methods:', allowMethods)
+      console.log('📋 Access-Control-Allow-Headers:', allowHeaders)
+      console.log('🔐 Access-Control-Allow-Credentials:', allowCredentials)
+
+    } catch (error) {
+      console.error('❌ CORS test failed:', error)
+    }
+  }
+
+  // Debug function to test different endpoints
+  const testEndpoints = async () => {
+    const endpoints = [
+      '/api/auth/login/me',
+      '/api/auth/me',
+      '/api/user/me',
+      '/api/me',
+      '/auth/me',
+      '/me'
+    ]
+
+    console.log('🧪 Testing different endpoint variations...')
+
+    for (const endpoint of endpoints) {
+      try {
+        const fullUrl = `https://masterwayne.duckdns.org${endpoint}`
+        console.log(`🔍 Testing: ${fullUrl}`)
+
+        const response = await fetch(fullUrl, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
+
+        console.log(`📊 ${endpoint} - Status: ${response.status}`)
+
+        if (response.ok) {
+          console.log(`✅ ${endpoint} - SUCCESS!`)
+          const data = await response.json()
+          console.log(`📄 ${endpoint} - Data:`, data)
+        }
+      } catch (error) {
+        console.log(`❌ ${endpoint} - Error:`, error.message)
+      }
+    }
+  }
+
   useEffect(() => {
     // Check if user is logged in via JWT token in HTTP cookie
     const checkAuthStatus = async () => {
       try {
-        console.log('Checking auth status...')
-        const response = await fetch('http://localhost:8080/api/auth/login/me', {
+        console.log('🔍 Checking auth status...')
+        console.log('🌐 Making request to: https://masterwayne.duckdns.org/api/auth/login/me')
+
+        // Check cookies before making the request
+        console.log('🍪 Current cookies before auth check:', document.cookie)
+        console.log('🌍 Current origin:', window.location.origin)
+        console.log('🎯 Target domain:', 'masterwayne.duckdns.org')
+        console.log('🔒 Using HTTPS:', window.location.protocol === 'https:')
+
+        const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/me', {
           method: 'GET',
-          credentials: 'include',
+          credentials: 'include', // This should send cookies
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
         })
 
-        console.log('Auth check response status:', response.status)
-        console.log('Auth check response ok:', response.ok)
+        console.log('📊 Auth check response status:', response.status)
+        console.log('✅ Auth check response ok:', response.ok)
+        console.log('🔗 Response URL:', response.url)
+        console.log('📋 Response headers:', Object.fromEntries(response.headers.entries()))
 
-        // Only process response if it's successful
-        if (response.ok) {
-          const userData = await response.json()
-          console.log('Auth check user data:', userData)
+        // Try to read the response regardless of status (since backend returns JSON even on 404)
+        let userData = null
+        try {
+          userData = await response.json()
+          console.log('👤 Auth check user data:', userData)
+        } catch (e) {
+          console.log('❌ Could not parse response as JSON')
+          // If we can't parse JSON, try to read as text
+          try {
+            const errorText = await response.text()
+            console.log('📄 Response body as text:', errorText)
+          } catch (textError) {
+            console.log('❌ Could not read response body at all')
+          }
+        }
 
-          if ((userData.id || userData.userId) && userData.email) {
-            console.log('User authenticated, setting user data')
-            setUser({
-              id: userData.id || userData.userId,
-              email: userData.email,
-              name: userData.name
-            })
-            return // Exit early if user is authenticated
-          } else {
-            console.log('User data incomplete:', userData)
+        // Check if we have valid user data (regardless of HTTP status)
+        if (userData && (userData.id || userData.userId) && userData.email) {
+          console.log('✅ User authenticated, setting user data')
+          setUser({
+            id: userData.id || userData.userId,
+            email: userData.email,
+            name: userData.name
+          })
+          return // Exit early if user is authenticated
+        }
+
+        // Handle the expected "try login" response (404 is normal when not logged in)
+        if (userData && userData.message === 'try login') {
+          console.log('ℹ️ User not logged in - received expected "try login" response')
+        } else if (!response.ok) {
+          console.log('❌ Auth check failed with status:', response.status)
+          if (userData) {
+            console.log('📄 Error response data:', userData)
           }
         } else {
-          console.log('Auth check failed with status:', response.status)
+          console.log('⚠️ Successful response but user data incomplete:', userData)
         }
 
         // User not authenticated or response not ok, check for guest session
-        console.log('User not authenticated, checking for guest session')
+        console.log('👤 User not authenticated, checking for guest session')
         const savedGuestId = localStorage.getItem('urlShortener_guestId')
         if (savedGuestId) {
-          console.log('Found saved guest ID:', savedGuestId)
+          console.log('💾 Found saved guest ID:', savedGuestId)
           setGuestId(savedGuestId)
         }
       } catch (error) {
-        console.error('Auth check error:', error)
+        console.error('🚨 Auth check network error:', error)
+        console.error('🔍 Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        })
+
+        // Check if it's a CORS error
+        if (error.message.includes('CORS') || error.message.includes('cross-origin')) {
+          console.error('🚫 CORS Error detected - server may not be configured for cross-origin requests')
+        }
+
+        // Check if it's a network error
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          console.error('🌐 Network Error - server may be unreachable')
+        }
+
         // Silently handle network errors and fallback to guest session
         const savedGuestId = localStorage.getItem('urlShortener_guestId')
         if (savedGuestId) {
@@ -80,6 +272,17 @@ export const AuthProvider = ({ children }) => {
     }
 
     checkAuthStatus()
+
+    // Add test functions to window for debugging
+    if (typeof window !== 'undefined') {
+      window.testAuthEndpoints = testEndpoints
+      window.testCORS = testCORS
+      window.testCookies = testCookies
+      console.log('🛠️ Debug functions added:')
+      console.log('  - window.testAuthEndpoints()')
+      console.log('  - window.testCORS()')
+      console.log('  - window.testCookies()')
+    }
   }, [])
 
   const login = (userData) => {
@@ -101,7 +304,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithGuest = async (currentGuestId) => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login/guest', {
+      const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/guest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +359,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // Call backend logout endpoint to clear HTTP cookie
-      const response = await fetch('http://localhost:8080/api/logout', {
+      const response = await fetch('https://masterwayne.duckdns.org/api/logout', {
         method: 'GET',
         credentials: 'include',
       })

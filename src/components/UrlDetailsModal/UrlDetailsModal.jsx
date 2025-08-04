@@ -50,6 +50,43 @@ const UrlDetailsModal = ({ isOpen, onClose, url, onQrCodeClick }) => {
             </div>
           </div>
 
+          {/* Quick Summary */}
+          {url.analytics.totalClicks > 0 && (
+            <div className="summary-section">
+              <h3>📊 Quick Summary</h3>
+              <div className="summary-grid">
+                <div className="summary-item">
+                  <span className="summary-label">Most Popular Country:</span>
+                  <span className="summary-value">
+                    {url.analytics.topCountries[0]?.country || 'Unknown'} 
+                    ({url.analytics.topCountries[0]?.clicks || 0} clicks)
+                  </span>
+                </div>
+                <div className="summary-item">
+                  <span className="summary-label">Top Browser:</span>
+                  <span className="summary-value">
+                    {url.analytics.topBrowsers[0]?.browser || 'Unknown'}
+                    ({url.analytics.topBrowsers[0]?.clicks || 0} clicks)
+                  </span>
+                </div>
+                <div className="summary-item">
+                  <span className="summary-label">Most Used Device:</span>
+                  <span className="summary-value">
+                    {url.analytics.deviceBreakdown[0]?.device || 'Unknown'}
+                    ({url.analytics.deviceBreakdown[0]?.percentage || 0}%)
+                  </span>
+                </div>
+                <div className="summary-item">
+                  <span className="summary-label">Peak Day:</span>
+                  <span className="summary-value">
+                    {url.analytics.peakClickDay?.date || 'N/A'}
+                    ({url.analytics.peakClickDay?.clicks || 0} clicks)
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Analytics */}
           <div className="analytics-section">
             <h3>📈 Click Analytics</h3>
@@ -134,7 +171,7 @@ const UrlDetailsModal = ({ isOpen, onClose, url, onQrCodeClick }) => {
             <div className="os-list">
               {url.analytics.operatingSystems.map((item, index) => (
                 <div key={index} className="os-item">
-                  <span className="os-name">{item.os || item.name || 'Unknown'}</span>
+                  <span className="os-name">{item.osName || item.os || item.name || 'Unknown'}</span>
                   <span className="os-clicks">{item.clicks || item.count || 0} clicks</span>
                 </div>
               ))}
@@ -208,9 +245,13 @@ const UrlDetailsModal = ({ isOpen, onClose, url, onQrCodeClick }) => {
             <div className="recent-list">
               {url.analytics.recentClicks.map((click, index) => (
                 <div key={index} className="recent-item">
-                  <span className="recent-time">{click.timestamp}</span>
-                  <span className="recent-location">{click.country}</span>
-                  <span className="recent-browser">{click.browser}</span>
+                  <span className="recent-time">
+                    {click.createdAt ? new Date(click.createdAt).toLocaleString() : click.timestamp || 'Unknown time'}
+                  </span>
+                  <span className="recent-location">{click.country || 'Unknown'}</span>
+                  <span className="recent-browser">
+                    {click.browser || 'Unknown'} {click.device ? `(${click.device})` : ''}
+                  </span>
                 </div>
               ))}
             </div>

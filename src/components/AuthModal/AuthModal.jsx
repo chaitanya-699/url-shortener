@@ -49,7 +49,9 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
       return false
     }
 
-    const response = await fetch('http://localhost:8080/api/auth/login', {
+    console.log('🍪 Cookies before login:', document.cookie)
+    
+    const response = await fetch('https://masterwayne.duckdns.org/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,10 +60,16 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
       body: JSON.stringify({ email, password }),
     })
 
+    console.log('📡 Login response status:', response.status)
+    console.log('📋 Login response headers:', Object.fromEntries(response.headers.entries()))
+    console.log('🍪 Cookies after login response:', document.cookie)
+
     const userData = await response.json()
 
     if (response.ok && (userData.id || userData.userId) && userData.email) {
       // Success: Backend returns {userId, message, email, name} or {id, message, email, name}
+      console.log('✅ Login successful, checking cookies again:', document.cookie)
+      
       login({
         id: userData.id || userData.userId,
         email: userData.email,
@@ -89,7 +97,9 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
       return false
     }
 
-    const response = await fetch('http://localhost:8080/api/auth/register', {
+    console.log('🍪 Cookies before registration:', document.cookie)
+    
+    const response = await fetch('https://masterwayne.duckdns.org/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -98,10 +108,16 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
       body: JSON.stringify({ email, password }),
     })
 
+    console.log('📡 Registration response status:', response.status)
+    console.log('📋 Registration response headers:', Object.fromEntries(response.headers.entries()))
+    console.log('🍪 Cookies after registration response:', document.cookie)
+
     const userData = await response.json()
 
     if (response.ok && (userData.id || userData.userId) && userData.email) {
       // Success: Backend returns {userId, message, email, name} or {id, message, email, name}
+      console.log('✅ Registration successful, checking cookies again:', document.cookie)
+      
       login({
         id: userData.id || userData.userId,
         email: userData.email,
@@ -130,7 +146,7 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
       return false
     }
 
-    const response = await fetch('http://localhost:8080/api/auth/login/guest', {
+    const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/guest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -201,7 +217,7 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
   const handleGoogleAuth = async () => {
     // TODO: Implement Google OAuth
     // Option 1: Redirect to backend OAuth endpoint
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google'
+    window.location.href = 'https://masterwayne.duckdns.org/oauth2/authorization/google'
 
     // Option 2: Use Google OAuth popup (if using client-side)
     // const response = await googleOAuthPopup()
@@ -215,7 +231,7 @@ const AuthModal = ({ isOpen, onClose, mode, onModeChange }) => {
   const handleGithubAuth = async () => {
     // TODO: Implement GitHub OAuth
     // Option 1: Redirect to backend OAuth endpoint
-    window.location.href = 'http://localhost:8080/oauth2/authorization/github'
+    window.location.href = 'https://masterwayne.duckdns.org/oauth2/authorization/github'
 
     // Option 2: Use GitHub OAuth popup (if using client-side)
     // const response = await githubOAuthPopup()

@@ -21,6 +21,8 @@ out/
 .env.production.local
 *.local
 
+*.pem
+
 # Logs
 logs/
 *.log

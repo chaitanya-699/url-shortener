@@ -114,11 +114,11 @@ const Home = () => {
     return {
       id: serverUrl.id,
       originalUrl: serverUrl.originalUrl,
-      shortUrl: serverUrl.shortUrl || (shortCode ? `http://localhost:8080/${shortCode}` : 'http://localhost:8080/undefined'),
+      shortUrl: serverUrl.shortUrl || (shortCode ? `https://masterwayne.duckdns.org/${shortCode}` : 'https://masterwayne.duckdns.org/undefined'),
       shortCode: shortCode,
       description: serverUrl.description || '',
       clicks: serverUrl.clicks || 0,
-      totalClicks: serverUrl.totalClicks || 0,
+      totalClicks: serverUrl.analyticsDto?.totalClicks || serverUrl.totalClicks || 0,
       analyticsDto: serverUrl.analyticsDto || null,
       qr: serverUrl.qr || null,
       createdAt: serverUrl.createdAt,
@@ -144,7 +144,7 @@ const Home = () => {
     return {
       id: serverUrl.id,
       originalUrl: serverUrl.originalUrl,
-      shortUrl: serverUrl.shortUrl || `http://localhost:8080/${serverUrl.shortCode}`,
+      shortUrl: serverUrl.shortUrl || `https://masterwayne.duckdns.org/${serverUrl.shortCode}`,
       shortCode: serverUrl.shortCode,
       description: serverUrl.description || '',
       clicks: serverUrl.clicks || 0,
@@ -162,7 +162,7 @@ const Home = () => {
   const refreshUrls = async () => {
     if (user) {
       try {
-        const response = await fetch('http://localhost:8080/api/logged/urlTableData/userAll', {
+        const response = await fetch('https://masterwayne.duckdns.org/api/logged/urlTableData/userAll', {
           method: 'GET',
           credentials: 'include'
         })
@@ -181,7 +181,7 @@ const Home = () => {
       }
     } else if (guestId) {
       try {
-        const response = await fetch('http://localhost:8080/api/urlTableData/guestAll', {
+        const response = await fetch('https://masterwayne.duckdns.org/api/urlTableData/guestAll', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ const Home = () => {
 
         // Then try to sync with server
         try {
-          const response = await fetch('http://localhost:8080/api/logged/urlTableData/userAll', {
+          const response = await fetch('https://masterwayne.duckdns.org/api/logged/urlTableData/userAll', {
             method: 'GET',
             credentials: 'include'
           })
@@ -246,7 +246,7 @@ const Home = () => {
 
         // Then try to sync with server
         try {
-          const response = await fetch('http://localhost:8080/api/urlTableData/guestAll', {
+          const response = await fetch('https://masterwayne.duckdns.org/api/urlTableData/guestAll', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -309,7 +309,7 @@ const Home = () => {
 
       if (user) {
         // User is logged in - use authenticated endpoint
-        apiEndpoint = 'http://localhost:8080/api/logged/urlTableData/user'
+        apiEndpoint = 'https://masterwayne.duckdns.org/api/logged/urlTableData/user'
         requestBody = {
           id: user.id,
           email: user.email,
@@ -322,14 +322,14 @@ const Home = () => {
         if (!guestId) {
           // First time guest - create new guest session
           currentGuestId = createGuestSession()
-          apiEndpoint = 'http://localhost:8080/api/urlTableData/guest'
+          apiEndpoint = 'https://masterwayne.duckdns.org/api/urlTableData/guest'
           requestBody = {
             originalUrl,
             description: description || null
           }
         } else {
           // Existing guest - use guest ID
-          apiEndpoint = 'http://localhost:8080/api/urlTableData/guestId'
+          apiEndpoint = 'https://masterwayne.duckdns.org/api/urlTableData/guestId'
           requestBody = {
             guestId: currentGuestId,
             originalUrl,
@@ -383,40 +383,78 @@ const Home = () => {
   }
 
   const handleRowClick = (url) => {
-    // Use real analytics data if available, otherwise generate dummy data for demo
-    const analytics = url.analyticsDto ? {
-      totalClicks: url.totalClicks || 0,
-      uniqueClicks: url.analyticsDto.uniqueClicks || 0,
-      clicksToday: url.analyticsDto.clicksToday || 0,
-      clicksThisWeek: url.analyticsDto.clicksThisWeek || 0,
-      clicksThisMonth: url.analyticsDto.clicksThisMonth || 0,
-      clicksLastMonth: url.analyticsDto.clicksLastMonth || 0,
-      averageClicksPerDay: url.analyticsDto.averageClicksPerDay || 0,
-      peakClickDay: url.analyticsDto.peakClickDayDto || null,
-      // Map server data to modal expected format with default values
-      topCountries: url.countryClicks && url.countryClicks.length > 0 ? url.countryClicks : [
-        { country: 'No data available', clicks: 0 }
-      ],
-      topBrowsers: url.browserTables && url.browserTables.length > 0 ? url.browserTables : [
-        { browser: 'No data available', clicks: 0 }
-      ],
-      deviceBreakdown: url.deviceTables && url.deviceTables.length > 0 ? url.deviceTables : [
-        { device: 'No data available', percentage: 0 }
-      ],
-      recentClicks: url.recentClicks && url.recentClicks.length > 0 ? url.recentClicks : [
-        { timestamp: 'No recent clicks', country: '-', browser: '-' }
-      ],
-      operatingSystems: url.operatingSystems && url.operatingSystems.length > 0 ? url.operatingSystems : [
-        { os: 'No data available', clicks: 0 }
-      ],
-      topReferrers: url.topReferrers && url.topReferrers.length > 0 ? url.topReferrers : [
-        { referrer: 'No data available', clicks: 0 }
-      ],
-      ipTables: url.ipTables && url.ipTables.length > 0 ? url.ipTables : [
-        { ip: 'No data available', clicks: 0 }
-      ],
-      clicksByDates: url.clicksByDates || []
-    } : generateDummyAnalytics()
+    // Use real analytics data from server
+    const analytics = {
+      // Basic analytics from analyticsDto
+      totalClicks: url.analyticsDto?.totalClicks || url.totalClicks || 0,
+      uniqueClicks: url.analyticsDto?.uniqueClicks || 0,
+      clicksToday: url.analyticsDto?.clicksToday || 0,
+      clicksThisWeek: url.analyticsDto?.clicksThisWeek || 0,
+      clicksThisMonth: url.analyticsDto?.clicksThisMonth || 0,
+      clicksLastMonth: url.analyticsDto?.clicksLastMonth || 0,
+      averageClicksPerDay: url.analyticsDto?.averageClicksPerDay || 0,
+      peakClickDay: url.analyticsDto?.peakClickDayDto || null,
+      
+      // Detailed analytics from server arrays
+      topCountries: url.countryClicks && url.countryClicks.length > 0 ? 
+        url.countryClicks.map(item => ({
+          country: item.country || 'Unknown',
+          clicks: item.clicks || 0,
+          percentage: item.percentage || 0
+        })) : [{ country: 'No data available', clicks: 0, percentage: 0 }],
+        
+      topBrowsers: url.browserTables && url.browserTables.length > 0 ? 
+        url.browserTables.map(item => ({
+          browser: item.browser || 'Unknown',
+          clicks: item.clicks || 0,
+          percentage: item.percentage || 0
+        })) : [{ browser: 'No data available', clicks: 0, percentage: 0 }],
+        
+      deviceBreakdown: url.deviceTables && url.deviceTables.length > 0 ? 
+        url.deviceTables.map(item => ({
+          device: item.device || 'Unknown',
+          clicks: item.clicks || 0,
+          percentage: item.percentage || 0
+        })) : [{ device: 'No data available', clicks: 0, percentage: 0 }],
+        
+      operatingSystems: url.operatingSystems && url.operatingSystems.length > 0 ? 
+        url.operatingSystems.map(item => ({
+          osName: item.osName || 'Unknown',
+          os: item.osName || 'Unknown', // For backward compatibility
+          clicks: item.clicks || 0,
+          percentage: item.percentage || 0
+        })) : [{ osName: 'No data available', os: 'No data available', clicks: 0, percentage: 0 }],
+        
+      topReferrers: url.topReferrers && url.topReferrers.length > 0 ? 
+        url.topReferrers.map(item => ({
+          referrer: item.referred || item.referrer || 'Direct',
+          clicks: item.clicks || 0
+        })) : [{ referrer: 'No data available', clicks: 0 }],
+        
+      ipTables: url.ipTables && url.ipTables.length > 0 ? 
+        url.ipTables.map(item => ({
+          ip: item.ip || 'Unknown',
+          clicks: item.clicks || 0
+        })) : [{ ip: 'No data available', clicks: 0 }],
+        
+      recentClicks: url.recentClicks && url.recentClicks.length > 0 ? 
+        url.recentClicks.map(item => ({
+          createdAt: item.createdAt,
+          timestamp: item.createdAt, // For backward compatibility
+          country: item.country || 'Unknown',
+          browser: item.browser || 'Unknown',
+          device: item.device || 'Unknown',
+          ip: item.ip || 'Unknown',
+          referred: item.referred || 'direct',
+          userAgent: item.userAgent || ''
+        })) : [{ timestamp: 'No recent clicks', country: '-', browser: '-', device: '-' }],
+        
+      clicksByDates: url.clicksByDates && url.clicksByDates.length > 0 ? 
+        url.clicksByDates.map(item => ({
+          date: item.createAt || item.createdAt, // Note: server sends 'createAt' (typo?)
+          clicks: item.clicks || 0
+        })) : []
+    }
 
     setSelectedUrl({ ...url, analytics })
     setShowUrlDetails(true)
@@ -440,7 +478,7 @@ const Home = () => {
 
       if (user) {
         // Logged-in user - use authenticated delete endpoint
-        apiEndpoint = 'http://localhost:8080/api/logged/urlTableData/delete'
+        apiEndpoint = 'https://masterwayne.duckdns.org/api/logged/urlTableData/delete'
         requestBody = {
           userID: user.id,
           urlCode: urlToDelete.shortCode
@@ -452,7 +490,7 @@ const Home = () => {
           return
         }
 
-        apiEndpoint = 'http://localhost:8080/api/urlTableData/guest/delete'
+        apiEndpoint = 'https://masterwayne.duckdns.org/api/urlTableData/guest/delete'
         requestBody = {
           guestId: guestId,
           id: id,
@@ -510,7 +548,7 @@ const Home = () => {
   const handleGuestLogin = async (guestIdForUrls) => {
     // Load URLs from the guest session after successful guest login
     try {
-      const response = await fetch('http://localhost:8080/api/urlTableData/guestAll', {
+      const response = await fetch('https://masterwayne.duckdns.org/api/urlTableData/guestAll', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

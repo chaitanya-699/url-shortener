@@ -67,6 +67,8 @@ const UrlTable = ({
                         <span className="url-text" title={url.originalUrl}>
                           {url.originalUrl}
                         </span>
+                        {url.blocked && <span className="blocked-indicator" title="URL is blocked">🚫</span>}
+                        {!url.active && <span className="inactive-indicator" title="URL is inactive">⏸️</span>}
                       </div>
                       {url.description && (
                         <div className="url-description" title={url.description}>
@@ -138,15 +140,11 @@ const UrlTable = ({
                   <td className="analytics-cell" data-label="Analytics">
                     <div className="analytics-summary">
                       <div className="clicks-count">
-                        <span className="clicks-number">{url.totalClicks || 0}</span>
-                        <span className="clicks-label">clicks</span>
+                        <span className="clicks-number">
+                          {url.analyticsDto?.totalClicks || url.totalClicks || 0}
+                        </span>
+                        <span className="clicks-label">TOTAL CLICKS</span>
                       </div>
-                      {url.analyticsDto && (
-                        <div className="analytics-details">
-                          <small>Today: {url.analyticsDto.clicksToday || 0}</small>
-                          <small>Week: {url.analyticsDto.clicksThisWeek || 0}</small>
-                        </div>
-                      )}
                     </div>
                   </td>
                 )}

@@ -102,7 +102,7 @@ const ForgotPasswordModal = ({ isOpen, onClose, onBackToSignIn, onSuccess }) => 
             return
         }
 
-        const response = await fetch('http://localhost:8080/api/auth/login/forgotPassword', {
+        const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/forgotPassword', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ const ForgotPasswordModal = ({ isOpen, onClose, onBackToSignIn, onSuccess }) => 
             return
         }
 
-        const response = await fetch('http://localhost:8080/api/auth/login/verifyCode', {
+        const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/verifyCode', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ const ForgotPasswordModal = ({ isOpen, onClose, onBackToSignIn, onSuccess }) => 
             return
         }
 
-        const response = await fetch('http://localhost:8080/api/auth/login/resetPassword', {
+        const response = await fetch('https://masterwayne.duckdns.org/api/auth/login/resetPassword', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

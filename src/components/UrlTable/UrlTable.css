@@ -265,6 +265,32 @@
   line-height: 1.2;
 }
 
+.top-country {
+  margin-top: 2px;
+}
+
+.top-country small {
+  color: #fbbf24;
+  font-size: 8px;
+  font-weight: 500;
+}
+
+/* Status indicators */
+.blocked-indicator,
+.inactive-indicator {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.blocked-indicator {
+  color: #ef4444;
+}
+
+.inactive-indicator {
+  color: #f59e0b;
+}
+
 /* Empty State for Table */
 .empty-state {
   text-align: center;
