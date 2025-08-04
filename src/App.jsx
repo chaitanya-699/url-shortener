@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import ToastContainer from './components/Toast/ToastContainer'
 import Home from './pages/Home/Home'
+import OAuthSuccess from './pages/Home/OauthSuccess'
 import './App.css'
 import './components/ErrorBoundary.css'
 
@@ -11,6 +12,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path= "/oauth-success" element = {<OAuthSuccess/>}/>
     </Routes>
   )
 }
